@@ -1,0 +1,312 @@
+/* Основные стили приложения */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f5f5f5;
+}
+
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Шапка приложения */
+.App-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 2rem 0;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.App-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 300;
+}
+
+.App-header p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Основное содержимое */
+.App-main {
+  flex: 1;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Секции */
+.section {
+  margin-bottom: 3rem;
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e1e5e9;
+}
+
+.section h2 {
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #3498db;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+/* Сетка компонентов */
+.components-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+/* Демонстрационная область */
+.demo-area {
+  margin-top: 2rem;
+}
+
+.complex-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.demo-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.toggle-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+/* Подвал */
+.App-footer {
+  background: #2c3e50;
+  color: white;
+  text-align: center;
+  padding: 1.5rem;
+  margin-top: auto;
+}
+
+.App-footer p {
+  margin: 0.5rem 0;
+  opacity: 0.8;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .App-main {
+    padding: 1rem;
+  }
+  
+  .section {
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .components-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .App-header h1 {
+    font-size: 2rem;
+  }
+  
+  .section h2 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .App-header {
+    padding: 1.5rem 0;
+  }
+  
+  .App-header h1 {
+    font-size: 1.75rem;
+  }
+  
+  .section {
+    padding: 1rem;
+  }
+}
+
+/* Анимации */
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Стили для темы (используются в ThemeProvider) */
+.theme-wrapper.light {
+  background-color: #ffffff;
+  color: #333333;
+  transition: all 0.3s ease;
+}
+
+.theme-wrapper.dark {
+  background-color: #1a1a1a;
+  color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+.theme-wrapper.dark .section {
+  background-color: #2d2d2d;
+  border-color: #404040;
+}
+
+.theme-wrapper.dark .section h2 {
+  color: #ffffff;
+  border-color: #667eea;
+}
+
+.theme-wrapper.dark .card {
+  background-color: #2d2d2d;
+  border-color: #404040;
+  color: #ffffff;
+}
+
+.theme-wrapper.dark .card-title {
+  color: #ffffff;
+  border-color: #404040;
+}
+
+/* Улучшение читаемости в темной теме */
+.theme-wrapper.dark input,
+.theme-wrapper.dark textarea,
+.theme-wrapper.dark select {
+  background-color: #404040;
+  color: #ffffff;
+  border-color: #555555;
+}
+
+.theme-wrapper.dark input::placeholder {
+  color: #aaaaaa;
+}
+
+/* Специфичные стили для компонентов с темами */
+.themed-component {
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+.theme-wrapper.light .themed-component {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+}
+
+.theme-wrapper.dark .themed-component {
+  background-color: #2d2d2d;
+  border: 1px solid #404040;
+}
+
+.theme-box {
+  padding: 1rem;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+
+.theme-wrapper.light .theme-box {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.theme-wrapper.dark .theme-box {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  color: white;
+}
+
+/* Улучшение внешнего вида форм в темной теме */
+.theme-wrapper.dark .form-group label {
+  color: #e0e0e0;
+}
+
+.theme-wrapper.dark .todo-item {
+  background-color: #2d2d2d;
+  border-color: #404040;
+  color: #ffffff;
+}
+
+.theme-wrapper.dark .search-results {
+  background-color: #2d2d2d;
+  border-color: #404040;
+}
+
+.theme-wrapper.dark .search-results li {
+  border-color: #404040;
+  color: #ffffff;
+}
+
+.theme-wrapper.dark .search-results li:hover {
+  background-color: #3d3d3d;
+}
+
+/* Стили для состояний загрузки и ошибок */
+.loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-message {
+  color: #e74c3c;
+  background-color: #fadbd8;
+  padding: 10px;
+  border-radius: 4px;
+  border-left: 4px solid #e74c3c;
+  margin: 10px 0;
+}
+
+.success-message {
+  color: #27ae60;
+  background-color: #d5f4e6;
+  padding: 10px;
+  border-radius: 4px;
+  border-left: 4px solid #27ae60;
+  margin: 10px 0;
+}

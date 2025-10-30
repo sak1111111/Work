@@ -1,0 +1,195 @@
+/* Стили для HooksComponents */
+
+.counter-hooks {
+  text-align: center;
+  padding: 20px;
+  border: 2px solid #9b59b6;
+  border-radius: 10px;
+  margin: 10px 0;
+}
+
+.user-profile {
+  max-width: 500px;
+  margin: 20px 0;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.user-profile .form-group {
+  margin-bottom: 15px;
+}
+
+.user-profile label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #333;
+}
+
+.user-profile input,
+.user-profile textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+.user-profile input:focus,
+.user-profile textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+}
+
+.effect-demo {
+  padding: 20px;
+  border: 2px solid #e74c3c;
+  border-radius: 10px;
+  margin: 10px 0;
+  background-color: #fff5f5;
+}
+
+.local-storage-demo {
+  padding: 20px;
+  border: 2px solid #f39c12;
+  border-radius: 10px;
+  margin: 10px 0;
+  background-color: #fff9e6;
+}
+
+.fetch-demo {
+  padding: 20px;
+  border: 2px solid #27ae60;
+  border-radius: 10px;
+  margin: 10px 0;
+  background-color: #f0fff4;
+}
+
+.user-data {
+  background: white;
+  padding: 15px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  margin-top: 10px;
+}
+
+.user-data p {
+  margin: 5px 0;
+  padding: 5px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.user-data p:last-child {
+  border-bottom: none;
+}
+
+.theme-toggle {
+  padding: 20px;
+  border: 2px solid #3498db;
+  border-radius: 10px;
+  margin: 10px 0;
+  background-color: #f0f8ff;
+}
+
+.theme-wrapper.light .theme-toggle {
+  background-color: #f0f8ff;
+  color: #333;
+}
+
+.theme-wrapper.dark .theme-toggle {
+  background-color: #1a252f;
+  color: #fff;
+}
+
+.themed-component {
+  margin-top: 15px;
+  padding: 15px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.theme-wrapper.light .themed-component {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.theme-wrapper.dark .themed-component {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  color: white;
+}
+
+.theme-box {
+  padding: 20px;
+  margin-top: 10px;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+/* Адаптивность для компонентов с хуками */
+@media (max-width: 768px) {
+  .user-profile {
+    margin: 10px 0;
+    padding: 15px;
+  }
+  
+  .counter-hooks,
+  .effect-demo,
+  .local-storage-demo,
+  .fetch-demo,
+  .theme-toggle {
+    padding: 15px;
+    margin: 10px 0;
+  }
+}
+
+/* Анимации для хуков */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+/* Стили для состояний загрузки в useFetch */
+.fetch-demo .loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+}
+
+.fetch-demo .loading::after {
+  content: '';
+  width: 20px;
+  height: 20px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Стили для ошибок */
+.fetch-demo .error {
+  color: #e74c3c;
+  background-color: #fadbd8;
+  padding: 15px;
+  border-radius: 6px;
+  border-left: 4px solid #e74c3c;
+  margin: 10px 0;
+}

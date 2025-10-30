@@ -1,0 +1,259 @@
+1. В чем разница между Link и NavLink в React Router?
+Link:
+
+Базовый компонент для создания навигационных ссылок
+
+Просто осуществляет переход на указанный маршрут
+
+Не имеет встроенной логики для выделения активной ссылки
+
+Используется для обычной навигации между страницами
+
+NavLink:
+
+Расширенная версия Link со специальными возможностями
+
+Автоматически добавляет класс active когда ссылка соответствует текущему URL
+
+Имеет дополнительные props: activeClassName, activeStyle, isActive
+
+Полезен для навигационных меню, где нужно визуально выделять текущую страницу
+
+Позволяет кастомизировать стили для активного состояния
+
+Пример использования:
+
+jsx
+// Link - простая ссылка
+<Link to="/about">О нас</Link>
+
+// NavLink - с выделением активного состояния
+<NavLink 
+  to="/about" 
+  className={({ isActive }) => isActive ? 'active-link' : ''}
+  style={({ isActive }) => ({ 
+    color: isActive ? 'blue' : 'black' 
+  })}
+>
+  О нас
+</NavLink>
+2. Как получить параметры из URL в компоненте?
+Для получения параметров из URL используется хук useParams:
+
+jsx
+import { useParams } from 'react-router-dom';
+
+function ProductDetail() {
+  // Получаем параметр :id из URL
+  const { id } = useParams();
+  
+  return (
+    <div>
+      <h1>Детали товара</h1>
+      <p>ID товара: {id}</p>
+    </div>
+  );
+}
+
+// В роутере определяем параметризованный маршрут:
+<Route path="/products/:id" element={<ProductDetail />} />
+Для нескольких параметров:
+
+jsx
+// Маршрут: /category/:categoryId/product/:productId
+const { categoryId, productId } = useParams();
+3. Что такое программная навигация и как ее реализовать?
+Программная навигация - это переход между страницами с помощью JavaScript кода, а не через клик по ссылке. Используется когда навигация должна происходить в ответ на определенные события (отправка формы, успешная авторизация и т.д.).
+
+Реализация через хук useNavigate:
+
+jsx
+import { useNavigate } from 'react-router-dom';
+
+function LoginForm() {
+  const navigate = useNavigate();
+  
+  const handleLogin = async (credentials) => {
+    try {
+      await loginUser(credentials);
+      // После успешного входа перенаправляем на dashboard
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Ошибка входа');
+    }
+  };
+  
+  const handleGoBack = () => {
+    navigate(-1); // Назад по истории браузера
+  };
+  
+  const handleWithState = () => {
+    // Переход с передачей состояния
+    navigate('/profile', { state: { from: 'login' } });
+  };
+  
+  return (
+    <form onSubmit={handleLogin}>
+      {/* поля формы */}
+      <button type="submit">Войти</button>
+      <button type="button" onClick={handleGoBack}>Назад</button>
+    </form>
+  );
+}
+4. Как передать данные между маршрутами?
+Основные способы передачи данных:
+
+Через параметры URL (для идентификаторов):
+
+jsx
+navigate(`/products/${productId}`);
+// Получаем через useParams()
+Через состояние (state) - для объектов и сложных данных:
+
+jsx
+// Передача
+navigate('/success', { 
+  state: { 
+    orderId: '12345',
+    total: 1000,
+    items: ['item1', 'item2']
+  } 
+});
+
+// Получение
+import { useLocation } from 'react-router-dom';
+
+function SuccessPage() {
+  const location = useLocation();
+  const { orderId, total, items } = location.state || {};
+}
+Через query параметры (для фильтров, поиска):
+
+jsx
+navigate(`/search?query=react&category=books&page=1`);
+// Получаем через URLSearchParams
+const [searchParams] = useSearchParams();
+const query = searchParams.get('query');
+5. Что делает компонент Routes?
+Компонент Routes:
+
+Заменяет старый компонент Switch (из React Router v5)
+
+Оборачивает коллекцию Route компонентов
+
+Обеспечивает рендеринг только первого подходящего маршрута
+
+Автоматически выбирает наиболее специфичный matching route
+
+Позволяет вложенную маршрутизацию
+
+jsx
+<Routes>
+  <Route path="/" element={<Home />} />
+  <Route path="/about" element={<About />} />
+  <Route path="/products" element={<Products />} />
+  <Route path="/products/:id" element={<ProductDetail />} />
+  <Route path="/contact" element={<Contact />} />
+  <Route path="*" element={<NotFound />} />
+</Routes>
+Ключевые особенности:
+
+Рендерит только один Route (первый подходящий)
+
+Поддерживает относительные пути
+
+Обеспечивает приоритет маршрутов (более специфичные сначала)
+
+6. Как создать защищённый маршрут?
+Защищённый маршрут - это маршрут, доступный только авторизованным пользователям. Создается через компонент-обертку.
+
+Способ 1: Компонент ProtectedRoute
+
+jsx
+import { Navigate } from 'react-router-dom';
+
+function ProtectedRoute({ children, isAuthenticated }) {
+  return isAuthenticated ? children : <Navigate to="/login" replace />;
+}
+
+// Использование:
+<Route 
+  path="/dashboard" 
+  element={
+    <ProtectedRoute isAuthenticated={user !== null}>
+      <Dashboard />
+    </ProtectedRoute>
+  } 
+/>
+Способ 2: Условный рендеринг в Route
+
+jsx
+<Route 
+  path="/admin" 
+  element={isAdmin ? <AdminPanel /> : <Navigate to="/access-denied" />} 
+/>
+Способ 3: С обработкой редиректа на предыдущую страницу
+
+jsx
+function ProtectedRoute({ children }) {
+  const { user } = useAuth();
+  const location = useLocation();
+  
+  if (!user) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+  
+  return children;
+}
+7. В чем разница между useNavigate и redirect?
+useNavigate:
+
+Тип: Хук (используется внутри функциональных компонентов)
+
+Возвращает: Функцию для программной навигации
+
+Использование: В обработчиках событий, useEffect, любой логике компонента
+
+Гибкость: Поддерживает переход вперед/назад, замену истории, передачу состояния
+
+Пример: После отправки формы, таймаута, успешной операции
+
+redirect:
+
+Тип: Компонент (используется в JSX)
+
+Поведение: Выполняет перенаправление сразу при рендере
+
+Использование: В условном рендеринге JSX
+
+Простота: Проще для простых условий перенаправления
+
+Пример: При рендере компонета, если пользователь не авторизован
+
+Примеры использования:
+
+jsx
+// useNavigate - в логике компонента
+function Checkout() {
+  const navigate = useNavigate();
+  
+  const handlePayment = async () => {
+    try {
+      await processPayment();
+      navigate('/order-success', { state: { orderId } });
+    } catch (error) {
+      navigate('/payment-failed');
+    }
+  };
+}
+
+// redirect - в условном рендеринге
+function Profile() {
+  const { user } = useAuth();
+  
+  if (!user) {
+    return <redirect to="/login" />;
+  }
+  
+  return <div>Профиль пользователя</div>;
+}

@@ -1,0 +1,402 @@
+1. В чем разница между event.preventDefault() и event.stopPropagation()? В каких ситуациях используется каждый метод?
+event.preventDefault():
+Отменяет стандартное поведение браузера
+Не останавливает всплытие события
+Используется когда нужно кастомное поведение вместо стандартного
+Примеры использования:
+```javascript
+// Отмена отправки формы
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    // Кастомная обработка данных
+});
+// Отмена перехода по ссылке
+link.addEventListener('click', (e) => {
+    e.preventDefault();
+    // Кастомная навигация
+});
+// Отмена контекстного меню
+document.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+    // Показать кастомное меню
+});
+```
+event.stopPropagation():
+Останавливает всплытие события по DOM-дереву
+Не отменяет стандартное поведение
+Используется когда нужно изолировать обработку события
+Примеры использования:
+```javascript
+// Остановка всплытия чтобы родительский обработчик не сработал
+button.addEventListener('click', (e) => {
+    e.stopPropagation();
+    // Только эта кнопка обработает клик
+});
+document.addEventListener('click', () => {
+    // Этот обработчик не сработает для кнопки выше
+});
+```
+event.stopImmediatePropagation():
+Останавливает всплытие И выполнение других обработчиков на том же элементе
+2. Как работает делегирование событий и какие преимущества оно дает по сравнению с назначением обработчиков на отдельные элементы?
+Принцип работы делегирования:
+```javascript
+// Вместо этого (проблема с динамическими элементами):
+document.querySelectorAll('.item').forEach(item => {
+    item.addEventListener('click', handler);
+});
+// Используем делегирование:
+document.getElementById('parent').addEventListener('click', function(event) {
+    if (event.target.classList.contains('item')) {
+        handleItemClick(event.target);
+    }
+});
+```
+Преимущества делегирования:
+Работа с динамическими элементами:
+```javascript
+// Новые .item будут автоматически обрабатываться
+parent.addEventListener('click', (e) => {
+    if (e.target.matches('.item')) {
+        console.log('Клик на элементе:', e.target.textContent);
+    }
+});
+```
+Экономия памяти:
+```javascript
+// Плохо: 1000 обработчиков
+for (let i = 0; i < 1000; i++) {
+    items[i].addEventListener('click', handler);
+}
+// Хорошо: 1 обработчик
+container.addEventListener('click', (e) => {
+    if (e.target.matches('.item')) {
+        handler(e.target);
+    }
+});
+```
+Упрощение кода:
+```javascript
+// Один обработчик для разных типов элементов
+list.addEventListener('click', (e) => {
+    if (e.target.matches('.delete-btn')) {
+        deleteItem(e.target.closest('.item'));
+    } else if (e.target.matches('.edit-btn')) {
+        editItem(e.target.closest('.item'));
+    } else if (e.target.matches('.item')) {
+        selectItem(e.target);
+    }
+});
+```
+3. Какие фазы жизненного цикла события существуют в JavaScript (capturing, target, bubbling) и как они влияют на порядок выполнения обработчиков?
+Три фазы события:
+Capturing (перехват) - событие движется сверху вниз к целевому элементу
+Target (цель) - событие достигло целевого элемента
+Bubbling (всплытие) - событие движется снизу вверх от целевого элемента
+Порядок выполнения:
+```html
+<div id="grandparent">
+    <div id="parent">
+        <button id="child">Click me</button>
+    </div>
+</div>
+<script>
+// Capturing phase (useCapture: true)
+grandparent.addEventListener('click', () => console.log('Capturing: grandparent'), true);
+parent.addEventListener('click', () => console.log('Capturing: parent'), true);
+child.addEventListener('click', () => console.log('Target: child'), true);
+// Bubbling phase (useCapture: false или опущено)
+child.addEventListener('click', () => console.log('Bubbling: child'));
+parent.addEventListener('click', () => console.log('Bubbling: parent'));
+grandparent.addEventListener('click', () => console.log('Bubbling: grandparent'));
+
+// Результат при клике на кнопку:
+// Capturing: grandparent
+// Capturing: parent
+// Target: child
+// Bubbling: child
+// Bubbling: parent
+// Bubbling: grandparent
+</script>
+```
+
+4. В чем разница между event.target и event.currentTarget? Когда следует использовать каждый из них?
+event.target:
+Элемент, который инициировал событие (где произошел клик)
+Не изменяется во время всплытия
+Используется для определения исходного элемента
+event.currentTarget:
+ Элемент, на котором в данный момент выполняется обработчик
+Изменяется во время всплытия
+Всегда равен this в обработчике
+Пример:
+```html
+<div id="parent">
+    <button id="child">Click me</button>
+</div>
+<script>
+parent.addEventListener('click', function(event) {
+    console.log('target:', event.target.id);        // "child" (кнопка)
+    console.log('currentTarget:', event.currentTarget.id); // "parent" (div)
+    console.log('this:', this.id);                  // "parent" (div)
+});
+</script>
+```
+Когда использовать:
+event.target - когда нужно знать конкретный элемент-источник
+event.currentTarget - когда нужен элемент с обработчиком
+5. Как создать и запустить кастомное событие? Какие параметры можно передать в конструктор CustomEvent?
+Создание кастомного события:
+```javascript
+// Простое кастомное событие
+const event = new CustomEvent('myEvent');
+// С данными
+const eventWithData = new CustomEvent('userLogin', {
+    detail: {
+        username: 'john_doe',
+        timestamp: new Date(),
+        userId: 12345
+    },
+    bubbles: true,      // Всплывает ли событие
+    cancelable: true    // Можно ли отменить
+});
+// Наследование от другого события
+class MyCustomEvent extends CustomEvent {
+    constructor(data) {
+        super('myCustom', { detail: data });
+    }
+}
+```
+Параметры CustomEvent:
+detail - пользовательские данные
+bubbles - всплытие (по умолчанию false)
+cancelable - возможность отмены (по умолчанию false)
+composed - пересекает ли границы Shadow DOM
+Запуск и обработка:
+```javascript
+// Создание и запуск
+const customEvent = new CustomEvent('notification', {
+    detail: { message: 'Hello!', type: 'success' }
+});
+element.dispatchEvent(customEvent);
+// Обработка
+element.addEventListener('notification', (event) => {
+    console.log(event.detail.message); // "Hello!"
+    console.log(event.detail.type);    // "success"
+});
+```
+ 6. Что такое debounce и throttle? В каких практических ситуациях их применение наиболее эффективно?
+Debounce - откладывает выполнение функции до тех пор, пока не пройдет определенное время без вызовов.
+```javascript
+function debounce(func, delay) {
+    let timeoutId;
+    return function(...args) {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => func.apply(this, args), delay);
+    };
+}
+// Использование
+const searchInput = document.getElementById('search');
+const debouncedSearch = debounce((query) => {
+    // Выполняется только после 500мс без ввода
+    fetchResults(query);
+}, 500);
+searchInput.addEventListener('input', (e) => {
+    debouncedSearch(e.target.value);
+});
+```
+Throttle - ограничивает частоту выполнения функции до определенного интервала.
+```javascript
+function throttle(func, interval) {
+    let lastCall = 0;
+    return function(...args) {
+        const now = Date.now();
+        if (now - lastCall >= interval) {
+            lastCall = now;
+            func.apply(this, args);
+        }
+    };
+}
+// Использование
+const throttledScroll = throttle(() => {
+    // Выполняется максимум раз в 100мс
+    updateProgressBar();
+}, 100);
+window.addEventListener('scroll', throttledScroll);
+```
+
+Практическое применение:
+Debounce для:
+Поисковые подсказки
+Валидация форм
+Сохранение черновиков
+Изменение размера окна
+Throttle для:
+Скроллинг
+Перетаскивание элементов
+Игровые контроллеры
+Отслеживание движения мыши
+7. Какие методы существуют для удаления обработчиков событий и почему важно удалять ненужные обработчики?
+Методы удаления:
+removeEventListener:
+```javascript
+function handleClick() { console.log('clicked'); }
+// Добавление
+element.addEventListener('click', handleClick);
+// Удаление
+element.removeEventListener('click', handleClick);
+```
+AbortController (современный способ):
+```javascript
+const controller = new AbortController();
+
+element.addEventListener('click', () => {
+    console.log('clicked');
+}, { signal: controller.signal });
+// Удаление всех обработчиков с этим signal
+controller.abort();
+```
+Клонирование элемента:
+```javascript
+const newElement = element.cloneNode(true);
+element.parentNode.replaceChild(newElement, element);
+```
+Почему важно удалять обработчики
+Утечки памяти:
+```javascript
+// Плохо - обработчики накапливаются
+function createTemporaryElement() {
+    const temp = document.createElement('div');
+    temp.addEventListener('click', () => {});
+    document.body.appendChild(temp);
+    // temp удаляется, но обработчик остается в памяти
+}
+// Хорошо
+function createTemporaryElement() {
+    const temp = document.createElement('div');
+    const handler = () => {};
+    temp.addEventListener('click', handler);
+    document.body.appendChild(temp);
+ 
+    // Перед удалением
+    temp.removeEventListener('click', handler);
+    temp.remove();
+}
+```
+Нежелательное поведение - старые обработчики могут мешать новой логике
+ 8. Как обрабатывать ошибки загрузки ресурсов (изображений, скриптов) и какие события для этого используются?
+Обработка ошибок загрузки:
+Для изображений:
+```javascript
+const img = new Image();
+img.addEventListener('load', () => {
+    console.log('Изображение загружено');
+    document.body.appendChild(img);
+});
+img.addEventListener('error', () => {
+    console.log('Ошибка загрузки изображения');
+    img.src = '/fallback-image.jpg'; // Запасное изображение
+});
+img.src = 'image.jpg';
+```
+Для скриптов:
+```javascript
+const script = document.createElement('script');
+
+script.addEventListener('load', () => {
+    console.log('Скрипт загружен');
+});
+script.addEventListener('error', () => {
+    console.log('Ошибка загрузки скрипта');
+    // Загрузка альтернативного скрипта
+});
+script.src = 'script.js';
+document.head.appendChild(script);
+```
+Глобальная обработка ошибок:
+```javascript
+// Ошибки загрузки ресурсов
+window.addEventListener('error', (event) => {
+    if (event.target.tagName === 'IMG' || 
+        event.target.tagName === 'SCRIPT' || 
+        event.target.tagName === 'LINK') {
+        console.log('Ошибка загрузки ресурса:', event.target.src || event.target.href);
+        event.preventDefault(); // Предотвращает вывод в консоль
+    }
+}, true); // Используем capturing phase
+```
+
+События загрузки:
+load - успешная загрузка
+error - ошибка загрузки
+abort - отмена загрузки
+loadstart - начало загрузки
+progress - прогресс загрузки
+loadend - окончание загрузки (успешное или нет)
+9. В чем разница между addEventListener и прямым назначением обработчиков через onclick, onkeydown и т.д.?
+addEventListener:
+```javascript
+element.addEventListener('click', handler1);
+element.addEventListener('click', handler2);
+// Оба обработчика выполнятся
+```
+Прямое назначение:
+```javascript
+element.onclick = handler1;
+element.onclick = handler2;
+// Только handler2 выполнится (handler1 перезаписан)
+```
+Сравнение:
+
+
+Рекомендации:
+Используйте addEventListener для профессиональных проектов
+onclick может быть удобен для простых случаев
+Избегайте смешивания подходов
+10. Как оптимизировать производительность при работе с большим количеством событий? Какие лучшие практики существуют?
+Делегирование событий:
+```javascript
+// Плохо
+document.querySelectorAll('.item').forEach(item => {
+    item.addEventListener('click', handler);
+});
+// Хорошо
+document.addEventListener('click', (event) => {
+    if (event.target.matches('.item')) {
+        handler(event.target);
+    }
+});
+```
+Пассивные обработчики:
+```javascript
+// Браузер может оптимизировать скроллинг
+window.addEventListener('scroll', () => {
+    // Обработка скролла
+}, { passive: true });
+```
+Throttle/Debounce:
+```javascript
+const throttledHandler = throttle(handleScroll, 16); // ~60fps
+window.addEventListener('scroll', throttledHandler);
+```
+Единый обработчик для группы событий:
+```javascript
+function handleUserInteraction(event) {
+    switch(event.type) {
+        case 'click':
+            // обработка клика
+            break;
+        case 'keydown':
+            // обработка клавиши
+            break;
+        case 'mouseover':
+            // обработка наведения
+            break;
+    }
+}
+
+element.addEventListener('click', handleUserInteraction);
+element.addEventListener('keydown', handleUserInteraction);
+element.addEventListener('mouseover', handleUserInteraction);
+```
+

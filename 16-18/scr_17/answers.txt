@@ -1,0 +1,271 @@
+1. В чем разница между управляемыми и неуправляемыми компонентами в формах React?
+Управляемые компоненты:
+
+Значения полей формы управляются состоянием React через useState
+
+Каждое изменение обрабатывается через обработчик onChange
+
+React является "единственным источником истины" для данных формы
+
+Позволяет легко реализовать валидацию в реальном времени
+
+Дает полный контроль над поведением формы
+
+Значения передаются через props value и checked
+
+Неуправляемые компоненты:
+
+Значения полей формы управляются непосредственно DOM
+
+Используется useRef для доступа к значениям полей
+
+Значения получаются только при необходимости (например, при отправке формы)
+
+Более близки к традиционному HTML подходу
+
+Меньше кода для простых форм
+
+Используют defaultValue и defaultChecked вместо value и checked
+
+2. Когда следует использовать управляемые компоненты, а когда - неуправляемые?
+Управляемые компоненты следует использовать когда:
+
+Требуется валидация в реальном времени с мгновенной обратной связью
+
+Значения полей динамически зависят от других полей формы
+
+Нужно реализовать сложную бизнес-логику формы
+
+Требуется полный контроль над состоянием и поведением формы
+
+Форма имеет динамические поля или сложную условную логику
+
+Необходима мгновенная реакция на изменения пользователя
+
+Неуправляемые компоненты следует использовать когда:
+
+Форма очень простая и не требует сложной валидации
+
+Нужно интегрироваться с не-React кодом или библиотеками
+
+Критична производительность при работе с очень большими формами
+
+Предпочтительнее нативное поведение браузера
+
+Валидация требуется только при отправке формы
+
+Форма содержит файловые inputs (которые всегда неуправляемые)
+
+3. Какие методы используются для обработки событий в формах React?
+Основные методы обработки событий в формах React:
+
+onChange - вызывается при изменении значения поля ввода
+
+onSubmit - вызывается при отправке формы
+
+onBlur - вызывается при потере фокуса полем
+
+onFocus - вызывается при получении фокуса полем
+
+onClick - вызывается при клике на элемент
+
+onKeyDown/onKeyUp/onKeyPress - вызываются при нажатии клавиш
+
+onInput - вызывается при вводе данных (более частый чем onChange)
+
+Пример использования:
+
+javascript
+const handleChange = (e) => {
+  setValue(e.target.value);
+};
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+  // обработка данных
+};
+
+<input onChange={handleChange} onBlur={handleBlur} />
+<form onSubmit={handleSubmit}>
+4. Как обрабатывать несколько полей ввода с одним обработчиком?
+Способы обработки нескольких полей одним обработчиком:
+
+Использование атрибута name и computed properties:
+
+javascript
+const [formData, setFormData] = useState({
+  name: '',
+  email: '',
+  password: ''
+});
+
+const handleChange = (e) => {
+  const { name, value, type, checked } = e.target;
+  setFormData(prev => ({
+    ...prev,
+    [name]: type === 'checkbox' ? checked : value
+  }));
+};
+
+<input name="name" onChange={handleChange} />
+<input name="email" onChange={handleChange} />
+Динамическое создание обработчиков через замыкания:
+
+javascript
+const createChangeHandler = (fieldName) => (e) => {
+  setFormData(prev => ({
+    ...prev,
+    [fieldName]: e.target.value
+  }));
+};
+
+<input onChange={createChangeHandler('name')} />
+<input onChange={createChangeHandler('email')} />
+Использование индексов для массивов полей:
+
+javascript
+const handleArrayChange = (index) => (e) => {
+  const newArray = [...formData.array];
+  newArray[index] = e.target.value;
+  setFormData(prev => ({ ...prev, array: newArray }));
+};
+5. Какие подходы к валидации форм в React вы знаете?
+Подходы к валидации форм в React:
+
+HTML5 встроенная валидация:
+
+Атрибуты: required, pattern, min, max, minLength, maxLength
+
+Типы: email, url, number
+
+Валидация при изменении (onChange):
+
+Мгновенная обратная связь
+
+Может быть навязчивой для пользователя
+
+Валидация при потере фокуса (onBlur):
+
+Менее навязчивая
+
+Позволяет пользователю закончить ввод перед проверкой
+
+Валидация при отправке формы:
+
+Проверка всех полей сразу
+
+Пользователь видит все ошибки одновременно
+
+Кастомная JavaScript валидация:
+
+Собственные функции валидации
+
+Сложные бизнес-правила
+
+Сторонние библиотеки:
+
+Formik - популярная библиотека для управления формами
+
+React Hook Form - минималистичная библиотека с хорошей производительностью
+
+Yup - для schema-based валидации
+
+Joi - мощная библиотека для валидации схем
+
+Серверная валидация:
+
+Дополнительная проверка на сервере
+
+Для данных, требующих проверки в БД
+
+6. Как предотвратить стандартное поведение формы (перезагрузку страницы)?
+Способы предотвращения перезагрузки страницы:
+
+e.preventDefault() в обработчике onSubmit:
+
+javascript
+const handleSubmit = (e) => {
+  e.preventDefault(); // предотвращает перезагрузку страницы
+  // обработка данных формы
+  console.log('Данные формы:', formData);
+};
+
+<form onSubmit={handleSubmit}>
+  <button type="submit">Отправить</button>
+</form>
+Использование кнопки с type="button" вместо type="submit":
+
+javascript
+const handleButtonClick = () => {
+  // обработка данных без отправки формы
+  console.log('Данные формы:', formData);
+};
+
+<form>
+  <button type="button" onClick={handleButtonClick}>
+    Отправить
+  </button>
+</form>
+Возврат false из обработчика (устаревший способ, не рекомендуется):
+
+javascript
+const handleSubmit = (e) => {
+  // обработка данных
+  return false; // предотвращает действие по умолчанию
+};
+
+7. Что такое "поднятие состояния" (lifting state up) в контексте форм?
+Поднятие состояния - это паттерн в React, при котором состояние переносится из дочернего компонента в ближайшего общего родительского компонента для совместного использования несколькими компонентами.
+
+В контексте форм это используется когда:
+
+Несколько компонентов должны работать с одними данными формы:
+
+javascript
+// Родительский компонент управляет состоянием
+function ParentForm() {
+  const [formData, setFormData] = useState({});
+  
+  return (
+    <div>
+      <PersonalInfo data={formData} onChange={setFormData} />
+      <ContactInfo data={formData} onChange={setFormData} />
+      <SubmitSection data={formData} />
+    </div>
+  );
+}
+Нужно синхронизировать состояние между родственными компонентами:
+
+javascript
+function FormContainer() {
+  const [userData, setUserData] = useState({});
+  
+  // Оба дочерних компонента получают доступ к одним данным
+  return (
+    <>
+      <UserProfile data={userData} onUpdate={setUserData} />
+      <AccountSettings data={userData} onUpdate={setUserData} />
+    </>
+  );
+}
+Общие действия над данными формы:
+
+javascript
+function MultiStepForm() {
+  const [formState, setFormState] = useState({});
+  
+  const handleSubmit = () => {
+    // Отправка всех данных формы
+    api.submit(formState);
+  };
+  
+  return (
+    <>
+      <Step1 data={formState} onChange={setFormState} />
+      <Step2 data={formState} onChange={setFormState} />
+      <Step3 data={formState} onChange={setFormState} />
+      <button onClick={handleSubmit}>Отправить все данные</button>
+    </>
+  );
+}
+н

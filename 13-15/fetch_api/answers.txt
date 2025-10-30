@@ -1,0 +1,108 @@
+1. Fetch API vs XMLHttpRequest
+
+Fetch: Современный API, основан на Promise, чище синтаксис
+
+XHR: Старый API, callback-based, больше возможностей (progress)
+
+Преимущества Fetch: Promise-based, цепочки, лучше с CORS
+
+2. Ошибки в Fetch API
+
+404 не вызывает reject: Fetch считает успехом любой ответ сервера
+
+Обработка: Проверять response.ok или response.status
+
+javascript
+fetch(url)
+  .then(response => {
+    if (!response.ok) throw new Error('HTTP error ' + response.status);
+    return response.json();
+  })
+3. HTTP методы в Fetch
+
+javascript
+// GET (по умолчанию), POST, PUT, DELETE, PATCH, HEAD, OPTIONS
+fetch(url, {
+  method: 'POST',
+  body: JSON.stringify(data)
+})
+4. Заголовки в Fetch
+
+javascript
+// Заголовки запроса
+fetch(url, {
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer token',
+    'Cache-Control': 'no-cache'
+  }
+})
+
+// Заголовки ответа
+response.headers.get('Content-Type')
+5. PUT vs PATCH
+
+PUT: Полное обновление ресурса (идемпотентный)
+
+PATCH: Частичное обновление ресурса
+
+Использовать: PUT когда заменяем весь ресурс, PATCH для частичных изменений
+
+6. Авторизация в Fetch
+
+javascript
+// Basic Auth
+headers: {'Authorization': 'Basic ' + btoa('user:pass')}
+
+// Bearer Token
+headers: {'Authorization': 'Bearer ' + token}
+
+// OAuth2 (обычно как Bearer)
+7. Отмена запросов
+
+AbortController: Современный способ
+
+javascript
+const controller = new AbortController();
+fetch(url, {signal: controller.signal});
+controller.abort(); // отмена
+8. Форматы данных
+
+javascript
+// JSON
+body: JSON.stringify(data)
+
+// FormData
+body: new FormData(form)
+
+// Blob/ArrayBuffer
+response.blob()
+response.arrayBuffer()
+9. Оптимизация запросов
+
+javascript
+// Параллельные запросы
+Promise.all([
+  fetch('/api/users'),
+  fetch('/api/posts')
+])
+
+// Кэширование
+const cache = new Map();
+async function cachedFetch(url) {
+  if (cache.has(url)) return cache.get(url);
+  const response = await fetch(url);
+  cache.set(url, response);
+  return response;
+}
+10. Best Practices
+
+Всегда обрабатывать ошибки
+
+Использовать timeout с AbortController
+
+Проверять response.ok
+
+Использовать переиспользуемые инстансы
+
+Добавлять retry logic для ненадежных сетей

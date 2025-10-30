@@ -1,0 +1,102 @@
+1. Функциональные vs классовые компоненты
+
+Функциональные: Функции, используют хуки, проще тестировать, меньше кода
+
+Классовые: Классы ES6, методы жизненного цикла, this контекст
+
+Использовать: Функциональные для нового кода, классовые для legacy или Error Boundaries
+
+2. Props vs State
+
+Props: Передаются извне, readonly, поток данных сверху вниз
+
+State: Внутреннее состояние, изменяется через setState/useState
+
+Правила: Не мутировать props, обновлять state только через спец. методы
+
+3. Поднятие состояния (Lifting State Up)
+
+Что: Перемещение состояния к общему родителю
+
+Когда: Несколько компонентов используют одни данные
+
+Пример: Фильтры, общие формы, синхронизированные данные
+
+4. Методы жизненного цикла
+
+Монтирование: constructor, render, componentDidMount
+
+Обновление: shouldComponentUpdate, render, componentDidUpdate
+
+Размонтирование: componentWillUnmount
+
+Использование: Запросы данных, подписки, очистка
+
+5. useState и useEffect
+
+javascript
+// useState
+const [state, setState] = useState(initialValue);
+
+// useEffect
+useEffect(() => {
+  // эффект
+  return () => {/* очистка */};
+}, [dependencies]);
+Правила хуков: Вызывать только на верхнем уровне и в React-функциях
+
+6. Ключи (keys) в списках
+
+Зачем: Идентификация элементов, оптимизация ререндеров
+
+Важность: Без keys React не может определить изменения
+
+Лучшие практики: Уникальные ID, не использовать index для изменяемых списков
+
+7. Обработка событий
+
+Отличия от нативного JS:
+
+camelCase (onClick vs onclick)
+
+JSX: функция, не строка
+
+preventDefault() явно
+
+Синтетические события: Кросс-браузерность
+
+8. Управляемые vs неуправляемые компоненты
+
+Управляемые: Значение через props, onChange обработчик
+
+Неуправляемые: Значение через ref, DOM управляет состоянием
+
+Использовать: Управляемые для React-way, неуправляемые для интеграции
+
+9. Context API
+
+Как работает: Позволяет передавать данные без пропсов
+
+Когда использовать: Глобальные данные (темы, пользователь, настройки)
+
+Структура: createContext(), Provider, Consumer/useContext
+
+10. Кастомные хуки
+
+Преимущества: Переиспользование логики, чистые компоненты
+
+Создание: Функция с use-префиксом, может использовать другие хуки
+
+javascript
+function useLocalStorage(key, initialValue) {
+  const [value, setValue] = useState(() => {
+    const stored = localStorage.getItem(key);
+    return stored ? JSON.parse(stored) : initialValue;
+  });
+  
+  useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(value));
+  }, [key, value]);
+  
+  return [value, setValue];
+}

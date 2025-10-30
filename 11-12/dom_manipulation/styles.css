@@ -1,0 +1,256 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f4f4f4;
+}
+
+header {
+    background: linear-gradient(135deg, #db1a0c 0%, #e0bc1a 100%);
+    color: white;
+    padding: 2rem 0;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.task-section {
+    background: white;
+    margin: 2rem 0;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.task-section h2 {
+    color: #db1a0c;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #f4f4f4;
+    padding-bottom: 0.5rem;
+}
+
+.controls {
+    margin: 1rem 0;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+button {
+    background: #db1a0c;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background: #e0bc1a;
+}
+
+.target-container {
+    border: 2px dashed #ccc;
+    padding: 1rem;
+    min-height: 100px;
+    margin-top: 1rem;
+    border-radius: 5px;
+}
+
+.card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 0.5rem 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.card h4 {
+    color: #db1a0c;
+    margin-bottom: 0.5rem;
+}
+
+.parent-container {
+    background: #e9ecef;
+    padding: 1rem;
+    border-radius: 5px;
+    margin: 1rem 0;
+}
+
+.child {
+    background: white;
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+    border-radius: 3px;
+    border-left: 4px solid #db1a0c;
+}
+
+.child.special {
+    border-left-color: #85085b;
+    background: #d4edda;
+}
+
+.results {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 5px;
+    margin-top: 1rem;
+    font-family: monospace;
+}
+
+.style-box {
+    background: #db1a0c;
+    color: white;
+    padding: 2rem;
+    text-align: center;
+    border-radius: 8px;
+    margin: 1rem 0;
+    transition: all 0.3s ease;
+}
+
+.style-box.active-style {
+    background: #85085b;
+    transform: scale(1.05);
+}
+
+.animated {
+    animation: pulse 1s ease-in-out;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.7; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.input-group {
+    margin: 1rem 0;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="number"] {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus {
+    border-color: #db1a0c;
+    outline: none;
+}
+
+.dynamic-list {
+    list-style: none;
+    margin: 1rem 0;
+}
+
+.list-item {
+    background: white;
+    padding: 0.75rem;
+    margin: 0.5rem 0;
+    border-radius: 5px;
+    border-left: 4px solid #e0bc1a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.list-item button {
+    background: #dc3545;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.875rem;
+}
+
+.list-item button:hover {
+    background: #c82333;
+}
+
+.user-form {
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #495057;
+}
+
+.form-output {
+    margin-top: 1rem;
+    min-height: 50px;
+}
+
+.error-message {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 0.75rem;
+    border-radius: 5px;
+    margin: 0.5rem 0;
+    border-left: 4px solid #dc3545;
+}
+
+.success-message {
+    background: #d1edff;
+    color: #155724;
+    padding: 1rem;
+    border-radius: 5px;
+    margin: 0.5rem 0;
+    border-left: 4px solid #85085b;
+}
+
+.success-message h3 {
+    color: #85085b;
+    margin-bottom: 0.5rem;
+}
+
+#input-display {
+    display: block;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background: #e9ecef;
+    border-radius: 3px;
+    min-height: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    main {
+        padding: 1rem;
+    }
+    
+    .controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    button {
+        width: 100%;
+    }
+}

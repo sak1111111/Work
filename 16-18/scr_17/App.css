@@ -1,0 +1,60 @@
+.App {
+  text-align: center;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.App-header {
+  background-color: #282c34;
+  padding: 20px;
+  color: white;
+}
+
+.App-header h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.App-header p {
+  margin: 10px 0 0 0;
+  opacity: 0.8;
+}
+
+.form-navigation {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.form-navigation button {
+  padding: 10px 20px;
+  border: 2px solid #007bff;
+  background-color: white;
+  color: #007bff;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+.form-navigation button:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+.form-navigation button.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.App-footer {
+  text-align: center;
+  padding: 20px;
+  margin-top: 40px;
+  background-color: white;
+  border-top: 1px solid #ddd;
+  color: #666;
+}

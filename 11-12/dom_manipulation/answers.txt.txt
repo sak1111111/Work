@@ -1,0 +1,252 @@
+1. В чем разница между innerHTML и textContent и когда следует использовать каждый метод?
+innerHTML:
+Парсит и интерпретирует HTML-разметку
+ Может создавать элементы DOM из строки
+Возвращает/устанавливает HTML-содержимое элемента
+Опасен при работе с пользовательским вводом (XSS-атаки)
+Медленнее textContent
+Пример: element.innerHTML = <strong>Текст</strong>
+textContent:
+Устанавливает/получает только текстовое содержимое
+Не интерпретирует HTML-теги
+Безопаснее и быстрее
+Сохраняет форматирование пробелами и переносами строк
+Пример: element.textContent = '<strong>Текст</strong>' покажет текст с тегами
+Когда использовать:
+innerHTML - когда нужно вставить HTML-разметку
+textContent - когда нужно работать только с текстом, особенно с пользовательским вводом
+2. Как работает делегирование событий (event delegation) и какие преимущества оно дает при работе с динамическими элементами?
+Принцип работы: Вместо назначения обработчиков каждому элементу, мы назначаем один обработчик родительскому элементу и используем event.target для определения конкретного элемента-источника события.
+Пример:
+```javascript
+// Вместо этого (не работает для динамических элементов):
+document.querySelectorAll('.item').forEach(item => {
+    item.addEventListener('click', handler);
+});
+// Используем делегирование:
+document.getElementById('parent').addEventListener('click', function(event) {
+    if (event.target.classList.contains('item')) {
+        // Обработка клика на .item
+    }
+});
+```
+Преимущества:
+Работает с динамически созданными элементами
+Меньшее потребление памяти (один обработчик вместо многих)
+Упрощенная инициализация
+Легче поддерживать код
+
+3. Какие методы используются для поиска элементов в DOM и в чем разница между getElementById, querySelector и querySelectorAll?
+getElementById():
+Ищет по ID
+Возвращает один элемент или null
+Самый быстрый метод
+Пример: document.getElementById('myId')
+querySelector():
+Ищет по CSS-селектору
+Возвращает первый найденный элемент или null
+Универсальный, но медленнее getElementById
+Пример: document.querySelector('.myClass')
+querySelectorAll():
+Ищет все элементы по CSS-селектору
+Возвращает NodeList (статическую коллекцию)
+Пример: `document.querySelectorAll('div.myClass')`
+Другие методы:
+getElementsByClassName()- по классу (возвращает HTMLCollection)
+getElementsByTagName() - по тегу (возвращает HTMLCollection)
+
+4. Как предотвратить стандартное поведение элемента при обработке событий и когда это необходимо?
+Методы:
+event.preventDefault() - отменяет стандартное поведение
+return false - в некоторых случаях (в jQuery)
+Когда использовать:
+Формы - чтобы обработать отправку через AJAX
+Ссылки - чтобы сделать навигацию через JavaScript
+Drag & Drop - чтобы разрешить перетаскивание
+Контекстное меню - чтобы создать кастомное меню
+Пример:
+```javascript
+form.addEventListener('submit', function(event) {
+    event.preventDefault(); // Отменяем отправку формы
+    // Кастомная обработка данных
+});
+
+link.addEventListener('click', function(event) {
+    event.preventDefault(); // Отменяем переход по ссылке
+    // Кастомная навигация
+});
+```
+
+5. В чем разница между classList.add() и className для работы с CSS классами?
+className:
+Работает со строкой всех классов
+Перезаписывает все классы элемента
+Пример: element.className = 'class1 class2'
+classList:
+Предоставляет методы для работы с отдельными классами
+Не затрагивает другие классы элемента
+Методы: add(), remove(), toggle(), contains()
+Пример: element.classList.add('new-class')
+Преимущества classList:
+Более читаемый код
+Безопасное добавление/удаление классов
+Поддержка нескольких классов: classList.add(c1, c2)
+Удобное переключение: classList.toggle(active)
+6. Как создать новый элемент и добавить его в DOM несколькими способами? Какой способ наиболее эффективен?
+Способы создания:
+createElement() + appendChild()** (рекомендуется):
+```javascript
+const div = document.createElement('div');
+div.textContent = 'Hello';
+parent.appendChild(div);
+```
+
+innerHTML:
+```javascript
+parent.innerHTML = '<div>Hello</div>';
+```
+insertAdjacentHTML():
+```javascript
+parent.insertAdjacentHTML('beforeend', '<div>Hello</div>');
+```
+DocumentFragment (для множественного добавления):
+```javascript
+const fragment = document.createDocumentFragment();
+for (let i = 0; i < 100; i++) {
+    const div = document.createElement('div');
+    fragment.appendChild(div);
+}
+parent.appendChild(fragment);
+```
+
+7. Что такое всплытие событий (event bubbling) и как работает метод stopPropagation()?
+Всплытие событий: Когда событие происходит на элементе, оно сначала обрабатывается на нем, затем на его родителе, и так далее до document.
+Пример:
+```html
+<div onclick="console.log('div')">
+    <button onclick="console.log('button')">Click</button>
+</div>
+```
+При клике на кнопку выведет: "button", затем "div"
+stopPropagation():
+Останавливает всплытие события
+Событие не достигнет родительских элементов
+Пример: event.stopPropagation()
+Когда использовать:
+Когда нужно обработать событие только на текущем элементе
+Чтобы предотвратить конфликты с обработчиками родителей
+8. Как получить данные из формы и в чем разница между методами сбора form data?
+Методы:
+
+ FormData API(современный способ):
+```javascript
+const formData = new FormData(form);
+const data = Object.fromEntries(formData);
+```
+
+Доступ к элементам по name:
+```javascript
+const name = form.elements.name.value;
+const email = form.elements.email.value;
+```
+querySelector:
+```javascript
+const name = form.querySelector('[name="name"]').value;
+```
+Сбор вручную:
+```javascript
+const data = {
+    name: document.getElementById('name').value,
+    email: document.getElementById('email').value
+};
+```
+
+FormData преимущества:
+Автоматически собирает все поля
+Работает с файлами
+Поддерживает множественные значения
+Удобно для отправки через fetch
+9. Какие события используются для обработки ввода данных и в чем разница между input, change и keyup?
+input:
+Срабатывает при каждом изменении значения
+В реальном времени
+Подходит для live-search, валидации
+change:
+Срабатывает при потере фокуса, если значение изменилось
+Для финального значения
+Подходит для форм, когда нужно окончательное значение
+keyup:
+Срабатывает при отпускании клавиши
+Только для клавиатурного ввода
+Можно получить код клавиши
+Примеры использования:
+```javascript
+// Live validation
+input.addEventListener('input', validate);
+// Final value
+select.addEventListener('change', handleSelection);
+// Keyboard handling
+input.addEventListener('keyup', function(event) {
+    if (event.key === 'Enter') {
+        submitForm();
+    }
+});
+```
+10. Как оптимизировать производительность при частых манипуляциях с DOM?
+Стратегии оптимизации:
+Минимизация reflow:
+```javascript
+// Плохо - вызывает multiple reflows
+for (let i = 0; i < 100; i++) {
+    element.style.left = i + 'px';
+}
+// Хорошо - один reflow
+element.style.display = 'none';
+for (let i = 0; i < 100; i++) {
+    // Операции
+}
+element.style.display = 'block';
+```
+DocumentFragment для множественного добавления:
+```javascript
+const fragment = document.createDocumentFragment();
+items.forEach(item => {
+    const element = createElement(item);
+    fragment.appendChild(element);
+});
+container.appendChild(fragment);
+```
+Кэширование ссылок на элементы:
+```javascript
+// Плохо
+for (let i = 0; i < 100; i++) {
+    document.getElementById('element').style.color = colors[i];
+}
+// Хорошо
+const element = document.getElementById('element');
+for (let i = 0; i < 100; i++) {
+    element.style.color = colors[i];
+}
+```
+Отложенные операции:
+```javascript
+// Использование requestAnimationFrame
+function update() {
+    // DOM операции
+    requestAnimationFrame(update);
+}
+```
+Избегание innerHTML в циклах:
+```javascript
+// Плохо
+for (let i = 0; i < 100; i++) {
+    element.innerHTML += '<div>' + i + '</div>';
+}
+// Хорошо
+let html = '';
+for (let i = 0; i < 100; i++) {
+    html += '<div>' + i + '</div>';
+}
+element.innerHTML = html;
+```
+

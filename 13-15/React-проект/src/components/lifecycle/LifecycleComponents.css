@@ -1,0 +1,48 @@
+/* Стили для LifecycleComponents */
+
+.timer {
+  text-align: center;
+  padding: 20px;
+  border: 2px solid #28a745;
+  border-radius: 10px;
+  margin: 10px 0;
+}
+
+.timer-controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.window-size-tracker {
+  padding: 20px;
+  border: 2px solid #ffc107;
+  border-radius: 10px;
+  margin: 10px 0;
+  background-color: #fff9e6;
+}
+
+.data-fetcher {
+  padding: 20px;
+  border: 2px solid #17a2b8;
+  border-radius: 10px;
+  margin: 10px 0;
+}
+
+.data-display {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  padding: 15px;
+  margin: 10px 0;
+  max-height: 200px;
+  overflow-y: auto;
+  font-size: 12px;
+  white-space: pre-wrap;
+}
+
+.error {
+  color: #dc3545;
+  font-weight: bold;
+}

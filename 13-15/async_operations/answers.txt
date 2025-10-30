@@ -1,0 +1,95 @@
+1. Promise.then().catch() vs async/await
+
+Promise.then().catch(): Цепочка вызовов, лучше для последовательных операций
+
+async/await + try/catch: Синхронный стиль, лучше для сложной логики и обработки ошибок
+
+Использовать: async/await для нового кода, Promise для простых цепочек
+
+2. Promise.all и ошибки
+
+Работа: Параллельное выполнение всех промисов
+
+При ошибке: Весь Promise.all отвергается сразу при первой ошибке
+
+Результат: Массив результатов при успехе, первая ошибка при failure
+
+3. Promise.all vs race vs allSettled
+
+Promise.all: Все успешно или первая ошибка (параллельные запросы)
+
+Promise.race: Первый завершенный (таймауты, кеширование)
+
+Promise.allSettled: Все завершаются (независимые операции)
+
+4. Retry logic с экспоненциальной задержкой
+
+javascript
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+async function retryWithBackoff(operation, maxRetries = 3) {
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      return await operation();
+    } catch (error) {
+      if (i === maxRetries - 1) throw error;
+      await delay(1000 * Math.pow(2, i)); // 1s, 2s, 4s...
+    }
+  }
+}
+5. Race condition
+
+Что: Непредсказуемый результат из-за порядка выполнения
+
+Как избежать: Отмена запросов (AbortController), флаги, правильная синхронизация
+
+6. Кэширование асинхронных запросов
+
+Стратегии:
+
+In-memory cache (Map/WeakMap)
+
+TTL (время жизни)
+
+Stale-while-revalidate
+
+LRU (Least Recently Used)
+
+7. Оптимизация производительности
+
+Параллельные запросы (Promise.all)
+
+Пагинация и ленивая загрузка
+
+Дебаунсинг и троттлинг
+
+Прерывание ненужных запросов
+
+8. Обработка ошибок в промисах
+
+Всегда возвращайте .catch() или используйте try/catch
+
+Не забывайте throw error в catch-блоках
+
+Используйте глобальные обработчики unhandledrejection
+
+9. Преимущества async/await
+
+Читаемость и поддержка кода
+
+Упрощенная обработка ошибок
+
+Синхронный стиль написания
+
+Легкая отладка
+
+10. Отладка асинхронного кода
+
+Инструменты:
+
+DevTools async stack traces
+
+console.log с временными метками
+
+Breakpoints в async функциях
+
+Promise debugging в браузере

@@ -1,0 +1,25 @@
+:root {
+    /* Цвета */
+    --primary-color: #c50e8b;
+    --accent-color: #bf1aac;
+    --background-color: #ECF0F1;
+    --text-color: #be19b3;
+    --gradient: linear-gradient(135deg, #8a0b73 0%, #ca21a6 100%);
+    
+    /* Шрифты */
+    --font-family: 'Roboto', sans-serif;
+    --font-size-base: 16px;
+    --font-size-h1: 2.5rem;
+    --font-size-h2: 2rem;
+    --font-size-h3: 1.5rem;
+    
+    /* Отступы */
+    --container-padding: 20px;
+    --section-gap: 60px;
+    --card-gap: 30px;
+    
+    /* Размеры */
+    --container-width: 1200px;
+    --header-height: 80px;
+    --button-height: 50px;
+}

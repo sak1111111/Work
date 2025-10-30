@@ -1,0 +1,41 @@
+/* Планшеты */
+@media (max-width: 768px) {
+    .benefits-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .hero h1 {
+        font-size: 2rem;
+    }
+    
+    .footer .container {
+        flex-direction: column;
+        gap: 20px;
+    }
+}
+
+/* Мобильные устройства */
+@media (max-width: 480px) {
+    .benefits-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .header .container {
+        flex-direction: column;
+        justify-content: center;
+        gap: 10px;
+    }
+    
+    .nav a {
+        margin: 0 10px;
+    }
+    
+    .hero {
+        height: 500px;
+        text-align: center;
+    }
+    
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+}
