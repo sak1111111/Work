@@ -1,0 +1,24 @@
+{
+  "name": "express-routing-practical",
+  "version": "1.0.0",
+  "description": "Практическая работа по Express.js и роутингу",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node --watch app.js"
+  },
+  "keywords": [
+    "express",
+    "nodejs",
+    "routing",
+    "rest-api"
+  ],
+  "author": "Ваше Имя",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

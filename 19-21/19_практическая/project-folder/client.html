@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тестовый клиент API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        h1, h2 {
+            color: #333;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        
+        .result {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 10px;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+        
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+            border-radius: 4px 4px 0 0;
+        }
+        
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            color: black;
+        }
+        
+        .tab button:hover {
+            background-color: #ddd;
+        }
+        
+        .tab button.active {
+            background-color: #007bff;
+            color: white;
+        }
+        
+        .tabcontent {
+            display: none;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-top: none;
+            border-radius: 0 0 4px 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Тестовый клиент для REST API</h1>
+        <p>Интерфейс для тестирования эндпоинтов сервера</p>
+        
+        <div class="tab">
+            <button class="tablinks active" onclick="openTab(event, 'Users')">Пользователи</button>
+            <button class="tablinks" onclick="openTab(event, 'Products')">Товары</button>
+            <button class="tablinks" onclick="openTab(event, 'Search')">Поиск</button>
+            <button class="tablinks" onclick="openTab(event, 'Advanced')">Продвинутый API</button>
+        </div>
+        
+        <div id="Users" class="tabcontent" style="display: block;">
+            <h2>Работа с пользователями</h2>
+            
+            <div class="section">
+                <h3>Получить всех пользователей</h3>
+                <button onclick="getUsers()">GET /users</button>
+                <div id="usersResult" class="result"></div>
+            </div>
+            
+            <div class="section">
+                <h3>Получить пользователя по ID</h3>
+                <input type="number" id="userId" placeholder="ID пользователя" value="1">
+                <button onclick="getUserById()">GET /users/{id}</button>
+                <div id="userResult" class="result"></div>
+            </div>
+            
+            <div class="section">
+                <h3>Создать нового пользователя</h3>
+                <input type="text" id="userName" placeholder="Имя">
+                <input type="number" id="userAge" placeholder="Возраст">
+                <button onclick="createUser()">POST /users</button>
+                <div id="createUserResult" class="result"></div>
+            </div>
+        </div>
+        
+        <div id="Products" class="tabcontent">
+            <h2>Работа с товарами</h2>
+            
+            <div class="section">
+                <h3>Получить все товары</h3>
+                <button onclick="getProducts()">GET /products</button>
+                <div id="productsResult" class="result"></div>
+            </div>
+            
+            <div class="section">
+                <h3>Получить товар по ID</h3>
+                <input type="number" id="productId" placeholder="ID товара" value="1">
+                <button onclick="getProductById()">GET /products/{id}</button>
+                <div id="productResult" class="result"></div>
+            </div>
+        </div>
+        
+        <div id="Search" class="tabcontent">
+            <h2>Поиск</h2>
+            
+            <div class="section">
+                <h3>Поиск по пользователям и товарам</h3>
+                <input type="text" id="searchQuery" placeholder="Поисковый запрос">
+                <button onclick="search()">GET /search?query=...</button>
+                <div id="searchResult" class="result"></div>
+            </div>
+        </div>
+        
+        <div id="Advanced" class="tabcontent">
+            <h2>Продвинутый API (с middleware)</h2>
+            
+            <div class="section">
+                <h3>Статус сервера</h3>
+                <button onclick="getStatus()">GET /api/status</button>
+                <div id="statusResult" class="result"></div>
+            </div>
+            
+            <div class="section">
+                <h3>Обновить пользователя (PUT)</h3>
+                <input type="number" id="updateUserId" placeholder="ID пользователя" value="1">
+                <input type="text" id="updateUserName" placeholder="Новое имя">
+                <input type="number" id="updateUserAge" placeholder="Новый возраст">
+                <button onclick="updateUser()">PUT /api/users/{id}</button>
+                <div id="updateUserResult" class="result"></div>
+            </div>
+            
+            <div class="section">
+                <h3>Удалить пользователя</h3>
+                <input type="number" id="deleteUserId" placeholder="ID пользователя">
+                <button onclick="deleteUser()">DELETE /api/users/{id}</button>
+                <div id="deleteUserResult" class="result"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const BASE_URL = 'http://localhost:3000';
+        const ADVANCED_URL = 'http://localhost:3001';
+        
+        function openTab(evt, tabName) {
+            const tabcontent = document.getElementsByClassName("tabcontent");
+            for (let i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            
+            const tablinks = document.getElementsByClassName("tablinks");
+            for (let i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+        
+        async function makeRequest(url, options = {}) {
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...options.headers
+                    },
+                    ...options
+                });
+                
+                const result = await response.json();
+                return {
+                    status: response.status,
+                    data: result
+                };
+            } catch (error) {
+                return {
+                    status: 'error',
+                    data: { error: error.message }
+                };
+            }
+        }
+        
+        // Базовый API
+        async function getUsers() {
+            const result = await makeRequest(`${BASE_URL}/users`);
+            document.getElementById('usersResult').textContent = JSON.stringify(result, null, 2);
+        }
+        
+        async function getUserById() {
+            const userId = document.getElementById('userId').value;
+            const result = await makeRequest(`${BASE_URL}/users/${userId}`);
+            document.getElementById('userResult').textContent = JSON.stringify(result, null, 2);
+        }
+        
+        async function createUser() {
+            const name = document.getElementById('userName').value;
+            const age = document.getElementById('userAge').value;
+            
+            const result = await makeRequest(`${BASE_URL}/users`, {
+                method: 'POST',
+                body: JSON.stringify({ name, age: parseInt(age) })
+            });
+            
+            document.getElementById('createUserResult').textContent = JSON.stringify(result, null, 2);
+        }
+        
+        async function getProducts() {
+            const result = await makeRequest(`${BASE_URL}/products`);
+            document.getElementById('productsResult').textContent = JSON.stringify(result, null, 2);
+        }
+        
+        async function getProductById() {
+            const productId = document.getElementById('productId').value;
+            const result = await makeRequest(`${BASE_URL}/products/${productId}`);
+            document.getElementById('productResult').textContent = JSON.stringify(result, null, 2);
+        }
+        
+        async function search() {
+            const query = document.getElementById('searchQuery').value;
+            const result = await makeRequest(`${BASE_URL}/search?query=${encodeURIComponent(query)}`);
+            document.getElementById('searchResult').textContent = JSON.stringify(result, null, 2);
+        }
+        
+        // Продвинутый API
+        async function getStatus() {
+            const result = await makeRequest(`${ADVANCED_URL}/api/status`);
+            document.getElementById('statusResult').textContent = JSON.stringify(result, null, 2);
+        }
+        
+        async function updateUser() {
+            const userId = document.getElementById('updateUserId').value;
+            const name = document.getElementById('updateUserName').value;
+            const age = document.getElementById('updateUserAge').value;
+            
+            const updateData = {};
+            if (name) updateData.name = name;
+            if (age) updateData.age = parseInt(age);
+            
+            const result = await makeRequest(`${ADVANCED_URL}/api/users/${userId}`, {
+                method: 'PUT',
+                body: JSON.stringify(updateData)
+            });
+            
+            document.getElementById('updateUserResult').textContent = JSON.stringify(result, null, 2);
+        }
+        
+        async function deleteUser() {
+            const userId = document.getElementById('deleteUserId').value;
+            const result = await makeRequest(`${ADVANCED_URL}/api/users/${userId}`, {
+                method: 'DELETE'
+            });
+            
+            document.getElementById('deleteUserResult').textContent = JSON.stringify(result, null, 2);
+        }
+    </script>
+</body>
+</html>

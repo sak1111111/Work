@@ -1,0 +1,23 @@
+{
+  "name": "nodejs-server-practical",
+  "version": "1.0.0",
+  "description": "Практическая работа по созданию сервера на Node.js",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "start-advanced": "node advanced-server.js",
+    "dev": "node --watch server.js",
+    "dev-advanced": "node --watch advanced-server.js"
+  },
+  "keywords": [
+    "nodejs",
+    "http",
+    "server",
+    "rest-api"
+  ],
+  "author": "Ваше Имя",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

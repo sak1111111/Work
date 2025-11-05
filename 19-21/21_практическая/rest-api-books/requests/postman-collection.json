@@ -1,0 +1,374 @@
+{
+  "info": {
+    "name": "Books REST API",
+    "description": "Полная коллекция для тестирования REST API управления книгами",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "🏠 Главная и статистика",
+      "item": [
+        {
+          "name": "GET Главная страница",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": [""]
+            }
+          }
+        },
+        {
+          "name": "GET Статистика библиотеки",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/stats",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "stats"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "📖 Получение книг (GET)",
+      "item": [
+        {
+          "name": "GET Все книги",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/books",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "books"]
+            }
+          }
+        },
+        {
+          "name": "GET Пагинация",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/books?page=1&limit=2",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "books"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "2"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Фильтр по автору",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/books?author=толстой",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "books"],
+              "query": [
+                {
+                  "key": "author",
+                  "value": "толстой"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Фильтр по жанру и доступности",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/books?genre=роман&available=true",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "books"],
+              "query": [
+                {
+                  "key": "genre",
+                  "value": "роман"
+                },
+                {
+                  "key": "available",
+                  "value": "true"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Поиск",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/books?search=война",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "books"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "война"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Сортировка",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/books?sortBy=year&order=desc",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "books"],
+              "query": [
+                {
+                  "key": "sortBy",
+                  "value": "year"
+                },
+                {
+                  "key": "order",
+                  "value": "desc"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET Книга по ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/books/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "books", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "➕ Создание книг (POST)",
+      "item": [
+        {
+          "name": "POST Создать книгу (успех)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Новая книга\",\n  \"author\": \"Новый автор\",\n  \"isbn\": \"978-5-389-12345-6\",\n  \"genre\": \"Драма\",\n  \"year\": 2024,\n  \"pages\": 300,\n  \"available\": true\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/books",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "books"]
+            }
+          }
+        },
+        {
+          "name": "POST Ошибка валидации",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Только название\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/books",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "books"]
+            }
+          }
+        },
+        {
+          "name": "POST Дубликат ISBN",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Другая книга\",\n  \"author\": \"Другой автор\",\n  \"isbn\": \"978-5-389-00001-1\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/books",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "books"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "✏️ Обновление книг (PUT/PATCH)",
+      "item": [
+        {
+          "name": "PUT Полное обновление",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Обновленное название\",\n  \"author\": \"Обновленный автор\",\n  \"isbn\": \"978-5-389-00001-1\",\n  \"genre\": \"Обновленный жанр\",\n  \"year\": 2024,\n  \"pages\": 400,\n  \"available\": false\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/books/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "books", "1"]
+            }
+          }
+        },
+        {
+          "name": "PATCH Частичное обновление",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"available\": true,\n  \"pages\": 350\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/books/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "books", "1"]
+            }
+          }
+        },
+        {
+          "name": "PUT Книга не найдена",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Книга\",\n  \"author\": \"Автор\",\n  \"isbn\": \"123\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/books/999",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "books", "999"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🗑️ Удаление книг (DELETE)",
+      "item": [
+        {
+          "name": "DELETE Удалить книгу",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/books/2",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "books", "2"]
+            }
+          }
+        },
+        {
+          "name": "DELETE Книга не найдена",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/api/books/999",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "books", "999"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000"
+    }
+  ]
+}
