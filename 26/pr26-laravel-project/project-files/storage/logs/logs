@@ -1,0 +1,5 @@
+@"
+[2024-01-01] Laravel app initialized manually for educational purposes
+[2024-01-01] Routes configured: /, /hello, /greeting
+[2024-01-01] Blade templates created successfully
+"@ | Out-File -FilePath "storage\logs\laravel.log" -Encoding UTF8

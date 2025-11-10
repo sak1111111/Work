@@ -1,0 +1,4 @@
+'[2024-01-01 10:00:00] local.INFO: Laravel application initialized
+[2024-01-01 10:00:01] local.INFO: Routes loaded successfully
+[2024-01-01 10:00:02] local.INFO: Blade templates compiled
+[2024-01-01 10:00:03] local.INFO: Application ready for Practical Work #26' | Out-File "project-files\storage\logs\laravel.log" -Encoding utf8

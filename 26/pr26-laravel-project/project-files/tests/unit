@@ -1,0 +1,22 @@
+@"
+<?php
+
+namespace Tests\Unit;
+
+use PHPUnit\Framework\TestCase;
+
+class ExampleTest extends TestCase
+{
+    public function test_basic_test()
+    {
+        \$this->assertTrue(true);
+    }
+    
+    public function test_route_existence()
+    {
+        \$this->assertTrue(route_exists('/'));
+        \$this->assertTrue(route_exists('/hello'));
+        \$this->assertTrue(route_exists('/greeting'));
+    }
+}
+"@ | Out-File -FilePath "tests\Unit\ExampleTest.php" -Encoding UTF8
